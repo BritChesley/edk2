@@ -882,6 +882,12 @@ UsbIoPortReset (
   // is in CONFIGURED state.
   //
   if (Dev->ActiveConfig != NULL) {
+    Status = UsbBuildDescTable (Dev);
+
+    if (EFI_ERROR (Status)) {
+      DEBUG ((DEBUG_ERROR, "UsbIoPortReset: failed to build descriptor table - %r\n", Status));
+    }
+
     Status = UsbSetConfig (Dev, Dev->ActiveConfig->Desc.ConfigurationValue);
 
     if (EFI_ERROR (Status)) {
